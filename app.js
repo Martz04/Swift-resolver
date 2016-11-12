@@ -1,16 +1,23 @@
 'use strict';
-var express = require('express');
-var app = express();
-var http = require('http').Server(app)
-var io = require('socket.io')(http);
+var express = require('express'),
+ app = express(),
+ server = app.listen(3000, '0.0.0.0', function() {
+     console.log('Listening to port:  ' + 3000);
+ }),
+ io = require('socket.io').listen(server),
+ socketController = require('./controller/socketController'),
+ path = require('path'),
+ publicDir = path.join(__dirname, 'public');
 
-app.use(express.static('public'));
+app.use('/user', express.static('public'));
+app.use('/dashboard', express.static('public'));
 
-app.get('/', function(request, response) {
-  response.sendFile('index.html');
+app.get('/user', function(request, response) {
+  response.sendFile(path.join(publicDir, 'user.html'));
 });
 
-io.on('connection', function(socket) {
-  console.log('A user connected\n');
+app.get('/dashboard', function(request, response) {
+  response.sendFile(path.join(publicDir, 'dashboard.html'));
 });
-http.listen(3000, ()=> console.log('Listening on port 3000\n'));
+
+io.on('connection', socketController.onSocketConnection);

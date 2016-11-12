@@ -5,19 +5,18 @@
     <link rel="stylesheet" href="css/master.css" media="screen">
   </head>
   <body>
-    <div class="wrapper bleue">
-      <div class="container grouping">
-        <div class="bubble">
-          Text
-        </div>
-        <div class="bubble">
-          Text
-        </div>
-      </div>
+    <div class="wrapper bleue" id="wrapper">
+
     </div>
   <script src="js/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     var socket = io();
+    socket.emit('login', 'master');
+    socket.on('login', function(name) {
+      var newDiv = $('<div class="bubble">' + name + ' </div>');
+      $('#wrapper').append(newDiv);
+    });
   </script>
   </body>
 </html>

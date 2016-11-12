@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin Users Connected</title>
+    <link rel="stylesheet" href="css/master.css" media="screen">
+  </head>
+  <body>
+    <div class="wrapper green">
+      <div class="container grouping" id="login">
+        <form action="#">
+          <input id="username" type="text" autofocus>
+        </form>
+      </div>
+      <div class="hidden container grouping" id="main">
+        <p>Login succesful </p>
+      </div>
+    </div>
+  <script src="js/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    var socket = io();
+    $('form').submit(function() {
+      socket.emit('login', $('#username').val());
+      $('#login').toggleClass('hidden');
+      $('#main').toggleClass('hidden');
+      return false;
+    });
+  </script>
+  </body>
+</html>
