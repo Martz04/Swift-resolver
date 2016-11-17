@@ -10,4 +10,9 @@ exports.onSocketConnection = function(socket) {
   socket.on('login', function(username) {
     socket.broadcast.emit('login', username);
   });
+
+  socket.on('code-response', function(code) {
+    console.log(code);
+    socket.broadcast.emit('lock-response', code);
+  });
 };

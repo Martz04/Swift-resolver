@@ -12,18 +12,32 @@
         </form>
       </div>
       <div class="hidden container grouping" id="main">
-        <p>Login succesful </p>
+        <div class="code-window">
+          <pre id="editor"></pre>
+          <button type="button">Enviar</button>
+        </div>
       </div>
     </div>
   <script src="js/socket.io.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="js/ace-builds/src-min/ace.js"></script>
   <script>
-    var socket = io();
+    var socket = io(),
+        editor = ace.edit("editor");
+    editor.setTheme('ace/theme/twilight');
+    editor.session.setMode('ace/mode/javascript');
     $('form').submit(function() {
       socket.emit('login', $('#username').val());
       $('#login').toggleClass('hidden');
       $('#main').toggleClass('hidden');
       return false;
+    });
+    $('.code-window').on('click', 'button', function() {
+      var data = editor.getValue();
+      socket.emit('code-response', data);
+    });
+    socket.on('lock-response', function(code) {
+      $('.code-window').find('button').attr("disabled", true);
     });
   </script>
   </body>

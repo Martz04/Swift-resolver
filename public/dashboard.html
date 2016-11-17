@@ -15,6 +15,11 @@
     socket.emit('login', 'master');
     socket.on('login', function(name) {
       var newDiv = $('<div class="bubble">' + name + ' </div>');
+      newDiv.data('score', {
+        correct: 0,
+        incorrect: 0,
+        points: 0
+      });
       $('#wrapper').append(newDiv);
     });
   </script>
